@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>反重力懸浮宇宙餐廳 - 智慧點餐系統</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Orbitron & Noto Sans TC -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&family=Orbitron:wght@500;700;900&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'sans-serif'],
+            display: ['Orbitron', '"Noto Sans TC"', 'sans-serif'],
+          },
+          colors: {
+            cosmic: {
+              950: '#030712',
+              900: '#0b0f19',
+              800: '#111827',
+            },
+            neon: {
+              cyan: '#00f0ff',
+              emerald: '#10b981',
+              pink: '#ff007f',
+              blue: '#3b82f6',
+            }
+          },
+          animation: {
+            'float-slow': 'float-antigravity 6s ease-in-out infinite',
+            'float-delayed': 'float-antigravity 7s ease-in-out 1.5s infinite',
+            'pulse-glow': 'pulse-glow 2.5s ease-in-out infinite',
+            'spin-slow': 'spin 12s linear infinite',
+          },
+          keyframes: {
+            'float-antigravity': {
+              '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+              '50%': { transform: 'translateY(-8px) rotate(0.4deg)' },
+            },
+            'pulse-glow': {
+              '0%, 100%': { opacity: '0.6', transform: 'scale(1)' },
+              '50%': { opacity: '0.9', transform: 'scale(1.05)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* 宇宙霓虹微光與自訂滾動條 */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #030712;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.25);
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 240, 255, 0.5);
+    }
+
+    /* 懸浮卡片霓虹 Hover 光暈特效 */
+    .neon-card {
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .neon-card:hover {
+      transform: translateY(-8px) scale(1.015);
+      border-color: rgba(0, 240, 255, 0.6);
+      box-shadow: 0 14px 35px -10px rgba(0, 240, 255, 0.35),
+        0 0 25px 2px rgba(16, 185, 129, 0.2);
+    }
+
+    /* 漸層文字效果 */
+    .gradient-text-neon {
+      background: linear-gradient(135deg, #00f0ff 0%, #3b82f6 50%, #10b981 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* 毛玻璃邊框發光 */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .glass-panel-glow {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 240, 255, 0.25);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.05);
+    }
+  </style>
+</head>
+
+<body
+  class="bg-slate-950 text-slate-100 min-h-screen font-sans relative overflow-x-hidden selection:bg-cyan-500 selection:text-black">
+
+  <!-- ================================================================= -->
+  <!-- 宇宙星雲背景發光光斑 (高斯模糊特效) -->
+  <!-- ================================================================= -->
+  <div
+    class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/15 rounded-full blur-[130px] pointer-events-none -z-10 animate-pulse-glow">
+  </div>
+  <div
+    class="fixed bottom-10 right-10 w-[32rem] h-[32rem] bg-emerald-500/15 rounded-full blur-[150px] pointer-events-none -z-10 animate-pulse-glow"
+    style="animation-delay: 1.5s;"></div>
+  <div class="fixed top-1/2 left-10 w-80 h-80 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+
+  <!-- 微型星光點綴網格 (CSS Dot Pattern) -->
+  <div
+    class="fixed inset-0 bg-[radial-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:32px_32px] pointer-events-none -z-10 opacity-60">
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- 頂部導覽列 (Header) -->
+  <!-- ================================================================= -->
+  <header class="sticky top-0 z-40 glass-panel border-b border-white/10 px-4 lg:px-8 py-3.5 transition-all">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+
+      <!-- 品牌識別 Logo -->
+      <div class="flex items-center gap-3">
+        <div
+          class="relative w-11 h-11 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 p-[1.5px] shadow-lg shadow-cyan-500/20">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center overflow-hidden">
+            <span class="text-2xl animate-spin-slow">🪐</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-black text-xl tracking-wider gradient-text-neon">ANTIGRAVITY</h1>
+            <span
+              class="text-[11px] px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 font-medium">宇宙概念店</span>
+          </div>
+          <p class="text-xs text-slate-400 tracking-widest">反重力懸浮宇宙餐廳 · 智慧點餐系統</p>
+        </div>
+      </div>
+
+      <!-- 右側操作按鈕區 -->
+      <div class="flex items-center gap-3">
+        <!-- API 狀態指示燈 -->
+        <div id="apiStatusBadge"
+          class="hidden sm:flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-slate-900/80 border border-white/10 text-slate-300">
+          <span id="apiStatusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span id="apiStatusText">模擬離線資料</span>
+        </div>
+
+        <!-- 切換管理員模式按鈕 -->
+        <button id="btnToggleAdmin"
+          class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-300 bg-white/5 hover:bg-cyan-500/15 border border-white/15 hover:border-cyan-400/50 text-slate-200 hover:text-cyan-300 shadow-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span id="adminToggleLabel">切換為管理員模式</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================================================================= -->
+  <!-- 管理員模式面板 (展開式新增餐點表單) -->
+  <!-- ================================================================= -->
+  <section id="adminPanel"
+    class="hidden overflow-hidden transition-all duration-500 ease-in-out border-b border-cyan-500/30 bg-slate-900/90 backdrop-blur-2xl px-4 lg:px-8 py-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex items-center justify-between mb-5">
+        <div class="flex items-center gap-2.5">
+          <span class="p-2 rounded-lg bg-cyan-500/20 text-cyan-400 border border-cyan-500/40">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </span>
+          <div>
+            <h2 class="text-base font-bold text-cyan-300">管理員控制中心 · 能量餐點快速上架</h2>
+            <p class="text-xs text-slate-400">填寫資料後將同步至後端 Google 試算表 (Sheet: menu)</p>
+          </div>
+        </div>
+        <button id="btnCloseAdmin"
+          class="text-slate-400 hover:text-white text-xs px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10">
+          ✕ 關閉管理介面
+        </button>
+      </div>
+
+      <form id="addMenuForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3.5">
+        <!-- 餐點名稱 -->
+        <div class="lg:col-span-2">
+          <label class="block text-xs font-medium text-slate-300 mb-1">餐點名稱 *</label>
+          <input type="text" id="inputName" required placeholder="如：量子躍遷紅燒牛排"
+            class="w-full px-3 py-2 rounded-xl bg-slate-950/70 border border-white/15 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-slate-100 placeholder-slate-500 outline-none transition" />
+        </div>
+
+        <!-- 分類 -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">餐點分類 *</label>
+          <select id="inputCategory"
+            class="w-full px-3 py-2 rounded-xl bg-slate-950/70 border border-white/15 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-slate-100 outline-none transition">
+            <option value="主食">主食</option>
+            <option value="副食">副食</option>
+            <option value="飲料">飲料</option>
+            <option value="甜點">甜點</option>
+          </select>
+        </div>
+
+        <!-- 價格 -->
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1">價格 (NT$) *</label>
+          <input type="number" id="inputPrice" required min="1" placeholder="如：280"
+            class="w-full px-3 py-2 rounded-xl bg-slate-950/70 border border-white/15 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-slate-100 placeholder-slate-500 outline-none transition" />
+        </div>
+
+        <!-- 圖片網址 -->
+        <div class="lg:col-span-2">
+          <label class="block text-xs font-medium text-slate-300 mb-1">圖片網址 (URL)</label>
+          <input type="url" id="inputImageUrl" placeholder="https://images.unsplash.com/..."
+            class="w-full px-3 py-2 rounded-xl bg-slate-950/70 border border-white/15 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-slate-100 placeholder-slate-500 outline-none transition" />
+        </div>
+
+        <!-- 餐點描述 -->
+        <div class="sm:col-span-2 lg:col-span-5">
+          <label class="block text-xs font-medium text-slate-300 mb-1">風味描述</label>
+          <input type="text" id="inputDescription" placeholder="如：採用星雲恆溫熟成技術，入口即化的醇厚星際口感"
+            class="w-full px-3 py-2 rounded-xl bg-slate-950/70 border border-white/15 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-slate-100 placeholder-slate-500 outline-none transition" />
+        </div>
+
+        <!-- 提交按鈕 -->
+        <div class="flex items-end lg:col-span-1">
+          <button type="submit" id="btnSubmitAdd"
+            class="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold text-sm tracking-wide shadow-lg shadow-cyan-500/20 hover:shadow-cyan-500/40 transition-all flex items-center justify-center gap-1.5">
+            <span id="btnSubmitAddText">上架餐點</span>
+            <span id="btnSubmitAddSpinner" class="hidden animate-spin">⟳</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- 主要內容區塊 (Main Layout: 菜單區 + 購物車區) -->
+  <!-- ================================================================= -->
+  <main class="max-w-7xl mx-auto px-4 lg:px-8 py-8">
+
+    <!-- 頂部標語與分類切換 -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <div>
+        <h2 class="text-2xl lg:text-3xl font-bold tracking-tight text-white flex items-center gap-2">
+          <span>懸浮能量補給站</span>
+          <span
+            class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Zero
+            Gravity Mode</span>
+        </h2>
+        <p class="text-sm text-slate-400 mt-1">選取您專屬的星際美食，享受零重力空間的無重力味蕾饗宴。</p>
+      </div>
+
+      <!-- 分類標籤頁籤 -->
+      <div id="categoryFilterGroup"
+        class="flex flex-wrap items-center gap-1.5 p-1 rounded-2xl glass-panel self-start md:self-auto">
+        <button data-cat="all"
+          class="cat-btn px-4 py-1.5 rounded-xl text-xs font-medium transition-all bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold shadow-md shadow-cyan-500/20">全部</button>
+        <button data-cat="主食"
+          class="cat-btn px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">主食</button>
+        <button data-cat="副食"
+          class="cat-btn px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">副食</button>
+        <button data-cat="飲料"
+          class="cat-btn px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">飲料</button>
+        <button data-cat="甜點"
+          class="cat-btn px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all">甜點</button>
+      </div>
+    </div>
+
+    <!-- 左右雙欄網格 (左：菜單，右：點餐單) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+      <!-- ============================================================= -->
+      <!-- 左側：餐點網格 (8 欄) -->
+      <!-- ============================================================= -->
+      <section class="lg:col-span-8">
+        <!-- 載入中動畫骨架 -->
+        <div id="menuLoading" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="glass-panel p-5 rounded-2xl animate-pulse h-80 flex flex-col justify-between">
+            <div class="w-full h-44 bg-slate-800/60 rounded-xl"></div>
+            <div class="h-4 bg-slate-800/80 rounded w-2/3"></div>
+            <div class="h-3 bg-slate-800/50 rounded w-full"></div>
+            <div class="h-8 bg-slate-800/80 rounded-xl"></div>
+          </div>
+          <div class="glass-panel p-5 rounded-2xl animate-pulse h-80 flex flex-col justify-between">
+            <div class="w-full h-44 bg-slate-800/60 rounded-xl"></div>
+            <div class="h-4 bg-slate-800/80 rounded w-2/3"></div>
+            <div class="h-3 bg-slate-800/50 rounded w-full"></div>
+            <div class="h-8 bg-slate-800/80 rounded-xl"></div>
+          </div>
+        </div>
+
+        <!-- 菜單餐點清單容器 -->
+        <div id="menuContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <!-- 卡片由 JavaScript 動態渲染 -->
+        </div>
+
+        <!-- 查無資料提示 -->
+        <div id="noDataAlert" class="hidden glass-panel p-12 rounded-3xl text-center">
+          <div class="text-5xl mb-3">🛸</div>
+          <h3 class="text-base font-bold text-slate-200">此分類尚無上架餐點</h3>
+          <p class="text-xs text-slate-500 mt-1">請切換其他分類或由管理員上架新品項！</p>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- 右側：懸浮購物車點餐單 (4 欄) -->
+      <!-- ============================================================= -->
+      <aside class="lg:col-span-4 sticky top-20">
+        <div class="glass-panel-glow rounded-3xl p-6 transition-all duration-300">
+
+          <!-- 購物車標題 -->
+          <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xl">🛒</span>
+              <h3 class="font-bold text-base text-white">星際點餐單</h3>
+            </div>
+            <span id="cartCountBadge"
+              class="text-xs px-2.5 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-mono">0
+              項餐點</span>
+          </div>
+
+          <!-- 購物車品項清單 (滾動區) -->
+          <div id="cartItemsList" class="space-y-3.5 max-h-[360px] overflow-y-auto pr-1">
+            <!-- 購物車無品項時的狀態 -->
+            <div id="emptyCartState" class="py-12 text-center text-slate-400">
+              <div
+                class="w-16 h-16 mx-auto mb-3 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-2xl animate-float-slow">
+                🌌
+              </div>
+              <p class="text-sm font-medium text-slate-300">點餐單空空如也</p>
+              <p class="text-xs text-slate-500 mt-1">快從左側捕捉幾道美味能量餐點吧！</p>
+            </div>
+          </div>
+
+          <!-- 結算與顧客資訊區 -->
+          <div id="cartCheckoutSection" class="hidden mt-6 pt-4 border-t border-white/10 space-y-4">
+
+            <!-- 金額明細 -->
+            <div class="space-y-2 text-xs text-slate-400">
+              <div class="flex justify-between">
+                <span>餐點小計</span>
+                <span id="cartSubtotal" class="text-slate-200 font-mono">NT$ 0</span>
+              </div>
+              <div class="flex justify-between text-emerald-400">
+                <span>反重力清潔服務費</span>
+                <span>NT$ 0 (免收)</span>
+              </div>
+              <div
+                class="flex justify-between items-baseline pt-2 border-t border-white/5 text-sm font-bold text-white">
+                <span class="text-slate-300">總計金額</span>
+                <span id="cartTotalPrice"
+                  class="text-xl font-display font-black text-cyan-300 drop-shadow-[0_0_12px_rgba(0,240,255,0.4)]">NT$
+                  0</span>
+              </div>
+            </div>
+
+            <!-- 顧客姓名欄位 -->
+            <div>
+              <label for="inputCustomerName" class="block text-xs font-medium text-slate-300 mb-1">
+                用餐顧客姓名 / 艙房代號 *
+              </label>
+              <input type="text" id="inputCustomerName" placeholder="例如：艦長 小明 (A-101)"
+                class="w-full px-3.5 py-2.5 rounded-xl bg-slate-950/80 border border-white/15 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 text-sm text-slate-100 placeholder-slate-500 outline-none transition" />
+            </div>
+
+            <!-- 確認送出按鈕 -->
+            <button id="btnSubmitOrder"
+              class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-400 via-blue-500 to-emerald-400 hover:opacity-95 text-slate-950 font-display font-black text-sm tracking-wider shadow-lg shadow-cyan-500/25 hover:shadow-cyan-500/40 transition-all flex items-center justify-center gap-2 group">
+              <span id="btnOrderText">確認送出點餐 🚀</span>
+              <span id="btnOrderSpinner" class="hidden animate-spin">⟳</span>
+            </button>
+
+            <p class="text-[11px] text-center text-slate-500">
+              ✦ 點擊後將自動經由量子通訊發送至廚房 ✦
+            </p>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- 提示訊息彈跳框 (Toast Notification) -->
+  <!-- ================================================================= -->
+  <div id="toastNotification"
+    class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 ease-out max-w-sm">
+    <div class="glass-panel-glow px-4 py-3.5 rounded-2xl flex items-center gap-3 border border-cyan-400/40 shadow-2xl">
+      <span id="toastIcon" class="text-2xl">✨</span>
+      <div>
+        <h4 id="toastTitle" class="text-xs font-bold text-cyan-300">通知標題</h4>
+        <p id="toastMessage" class="text-xs text-slate-300 mt-0.5">通知說明內容...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- 全局載入遮罩 (Loading Overlay) -->
+  <!-- ================================================================= -->
+  <div id="globalLoadingOverlay"
+    class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex flex-col items-center justify-center gap-4 opacity-0 pointer-events-none transition-opacity duration-300">
+    <div class="relative w-16 h-16">
+      <div class="absolute inset-0 rounded-full border-2 border-cyan-400/20"></div>
+      <div
+        class="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400 border-r-emerald-400 animate-spin">
+      </div>
+      <div class="absolute inset-2 rounded-full border-2 border-transparent border-b-blue-400 animate-spin-slow"></div>
+    </div>
+    <p id="globalLoadingText" class="text-xs font-mono text-cyan-300 tracking-widest animate-pulse">TRANSMITTING DATA...
+    </p>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- JavaScript 核心邏輯與非同步串接 -->
+  <!-- ================================================================= -->
+  <script>
+    /**
+     * ===================================================================
+     * 1. 系統常數與 API 設定
+     * ===================================================================
+     */
+    // ✦✦✦ 請將此處替換為您的 Google Apps Script 網頁應用程式網址 ✦✦✦
+    const API_URL = "https://script.google.com/macros/s/AKfycbzVAJr9IjD_LQz0OA-LURA2qKwJOcU-sYeiCIGnrEtCFOClA9ANy5v-v17vA4WifreUog/exec";
+
+    // 內聯預設替換 SVG（當圖片載入失敗 onerror 時自動切換，永不破圖）
+    const FALLBACK_IMAGE_SVG = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250" fill="%230b0f19"><rect width="400" height="250" fill="%230f172a"/><circle cx="200" cy="110" r="50" fill="%2300f0ff" opacity="0.15"/><path d="M175 115 C175 90, 225 90, 225 115 Z" fill="%2300f0ff" opacity="0.6"/><ellipse cx="200" cy="115" rx="35" ry="8" fill="%2300f0ff" opacity="0.4"/><ellipse cx="200" cy="120" rx="55" ry="12" fill="%2310b981" opacity="0.3"/><text x="50%25" y="180" font-family="sans-serif" font-size="13" fill="%2364748b" text-anchor="middle">✦ 反重力星際佳餚 ✦</text></svg>`;
+
+    // 初始展示用預設資料（當未設定 API_URL 或網路異常時自動展示，確保介面立即可見）
+    const DEFAULT_MOCK_MENU = [
+      {
+        id: 1,
+        name: "量子躍遷炙烤黑松露牛排",
+        category: "主食",
+        description: "星雲恆溫 58 度低溫熟成，搭配反重力浮空松露泡沫，肉質軟嫩入口即化。",
+        price: 480,
+        imageUrl: "https://images.unsplash.com/photo-1544025162-d76694265947?w=600&auto=format&fit=crop&q=80",
+        status: "上架"
+      },
+      {
+        id: 2,
+        name: "仙女座星系青醬海鮮義大利麵",
+        category: "主食",
+        description: "深海星斑蛤蜊與新鮮大蝦，佐以羅勒微引力青醬，風味鮮甜層次分明。",
+        price: 360,
+        imageUrl: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80",
+        status: "上架"
+      },
+      {
+        id: 3,
+        name: "微重力懸浮脆皮金箔薯條",
+        category: "副食",
+        description: "真空零重力高壓氣炸，外皮酥脆不含油膩感，附星際蒜香明太子沾醬。",
+        price: 160,
+        imageUrl: "https://images.unsplash.com/photo-1576107232684-1279f3908594?w=600&auto=format&fit=crop&q=80",
+        status: "上架"
+      },
+      {
+        id: 4,
+        name: "超新星爆發墨西哥辣烤雞翅",
+        category: "副食",
+        description: "微核融合香料醃漬 24 小時，表皮焦香香氣四溢，微辛口感令人欲罷不能。",
+        price: 220,
+        imageUrl: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=600&auto=format&fit=crop&q=80",
+        status: "上架"
+      },
+      {
+        id: 5,
+        name: "極光霓虹氣泡特調",
+        category: "飲料",
+        description: "天然蝶豆花與藍柑橘的量子層疊漸層，加入微氣泡口感與萊姆香氣。",
+        price: 150,
+        imageUrl: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600&auto=format&fit=crop&q=80",
+        status: "上架"
+      },
+      {
+        id: 6,
+        name: "黑洞引力特濃抹茶提拉米蘇",
+        category: "甜點",
+        description: "宇治頂級丸久小山園抹茶，微苦甘醇，如同黑洞般吸引著所有甜食愛好者。",
+        price: 190,
+        imageUrl: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600&auto=format&fit=crop&q=80",
+        status: "上架"
+      }
+    ];
+
+    /**
+     * ===================================================================
+     * 2. 全域狀態管理 (State)
+     * ===================================================================
+     */
+    let menuData = [];
+    let cart = [];
+    let isAdminMode = false;
+    let currentCategory = 'all';
+
+    /**
+     * ===================================================================
+     * 3. UI 元素參照
+     * ===================================================================
+     */
+    const menuContainer = document.getElementById('menuContainer');
+    const menuLoading = document.getElementById('menuLoading');
+    const noDataAlert = document.getElementById('noDataAlert');
+    const cartItemsList = document.getElementById('cartItemsList');
+    const emptyCartState = document.getElementById('emptyCartState');
+    const cartCheckoutSection = document.getElementById('cartCheckoutSection');
+    const cartCountBadge = document.getElementById('cartCountBadge');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const cartTotalPrice = document.getElementById('cartTotalPrice');
+    const inputCustomerName = document.getElementById('inputCustomerName');
+    const btnSubmitOrder = document.getElementById('btnSubmitOrder');
+    const btnOrderText = document.getElementById('btnOrderText');
+    const btnOrderSpinner = document.getElementById('btnOrderSpinner');
+    const btnToggleAdmin = document.getElementById('btnToggleAdmin');
+    const adminToggleLabel = document.getElementById('adminToggleLabel');
+    const adminPanel = document.getElementById('adminPanel');
+    const btnCloseAdmin = document.getElementById('btnCloseAdmin');
+    const addMenuForm = document.getElementById('addMenuForm');
+    const btnSubmitAdd = document.getElementById('btnSubmitAdd');
+    const btnSubmitAddText = document.getElementById('btnSubmitAddText');
+    const btnSubmitAddSpinner = document.getElementById('btnSubmitAddSpinner');
+    const apiStatusBadge = document.getElementById('apiStatusBadge');
+    const apiStatusDot = document.getElementById('apiStatusDot');
+    const apiStatusText = document.getElementById('apiStatusText');
+    const toastNotification = document.getElementById('toastNotification');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMessage = document.getElementById('toastMessage');
+    const toastIcon = document.getElementById('toastIcon');
+    const globalLoadingOverlay = document.getElementById('globalLoadingOverlay');
+    const globalLoadingText = document.getElementById('globalLoadingText');
+
+    /**
+     * ===================================================================
+     * 4. 輔助函式：Toast 通知與 Loading 動畫
+     * ===================================================================
+     */
+    let toastTimeout;
+    function showToast(title, message, icon = "✨") {
+      clearTimeout(toastTimeout);
+      toastTitle.textContent = title;
+      toastMessage.textContent = message;
+      toastIcon.textContent = icon;
+
+      toastNotification.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toastNotification.classList.add('translate-y-0', 'opacity-100');
+
+      toastTimeout = setTimeout(() => {
+        toastNotification.classList.remove('translate-y-0', 'opacity-100');
+        toastNotification.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+      }, 3500);
+    }
+
+    function toggleGlobalLoading(show, text = "TRANSMITTING DATA...") {
+      globalLoadingText.textContent = text;
+      if (show) {
+        globalLoadingOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        globalLoadingOverlay.classList.add('opacity-100');
+      } else {
+        globalLoadingOverlay.classList.add('opacity-0', 'pointer-events-none');
+        globalLoadingOverlay.classList.remove('opacity-100');
+      }
+    }
+
+    /**
+     * ===================================================================
+     * 5. 非同步後端 API 串接模組 (Fetch)
+     * ===================================================================
+     */
+
+    // (1) 讀取菜單 (GET: action=read)
+    async function fetchMenuFromAPI() {
+      menuLoading.classList.remove('hidden');
+      menuContainer.innerHTML = '';
+      noDataAlert.classList.add('hidden');
+
+      if (!API_URL || API_URL.trim() === "https://script.google.com/macros/s/AKfycbzVAJr9IjD_LQz0OA-LURA2qKwJOcU-sYeiCIGnrEtCFOClA9ANy5v-v17vA4WifreUog/exec") {
+        console.warn("未設定 API_URL，切換為內建模擬菜單資料。");
+        updateApiStatus(false, "展示模擬模式");
+        setTimeout(() => {
+          menuData = [...DEFAULT_MOCK_MENU];
+          menuLoading.classList.add('hidden');
+          renderMenu();
+        }, 500);
+        return;
+      }
+
+      try {
+        updateApiStatus(true, "連線中...");
+        const response = await fetch(`${API_URL}?action=read`);
+        const result = await response.json();
+
+        if (result.status === "success" && Array.isArray(result.data)) {
+          menuData = result.data;
+          updateApiStatus(true, "雲端已連線");
+        } else {
+          throw new Error(result.message || "取得菜單資料失敗");
+        }
+      } catch (error) {
+        console.error("API 載入失敗，降級使用本地預設資料:", error);
+        updateApiStatus(false, "連線異常 (切換模擬)");
+        showToast("雲端連線失敗", "已切換為本地離線菜單展示模式", "⚠️");
+        menuData = [...DEFAULT_MOCK_MENU];
+      } finally {
+        menuLoading.classList.add('hidden');
+        renderMenu();
+      }
+    }
+
+    // (2) 新增餐點 (POST: action=add)
+    async function apiAddMenuItem(newItem) {
+      if (!API_URL || API_URL.trim() === "https://script.google.com/macros/s/AKfycbzVAJr9IjD_LQz0OA-LURA2qKwJOcU-sYeiCIGnrEtCFOClA9ANy5v-v17vA4WifreUog/exec") {
+        // 模擬環境新增
+        const simulatedId = menuData.length > 0 ? Math.max(...menuData.map(d => Number(d.id) || 0)) + 1 : 1;
+        const created = { id: simulatedId, ...newItem };
+        menuData.push(created);
+        return created;
+      }
+
+      const payload = {
+        action: "add",
+        ...newItem
+      };
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+
+      if (result.status === "success") {
+        return result.data;
+      } else {
+        throw new Error(result.message || "後端新增餐點失敗");
+      }
+    }
+
+    // (3) 刪除餐點 (POST: action=delete)
+    async function apiDeleteMenuItem(id) {
+      if (!API_URL || API_URL.trim() === "https://script.google.com/macros/s/AKfycbzVAJr9IjD_LQz0OA-LURA2qKwJOcU-sYeiCIGnrEtCFOClA9ANy5v-v17vA4WifreUog/exec") {
+        // 模擬環境刪除
+        menuData = menuData.filter(item => String(item.id) !== String(id));
+        return true;
+      }
+
+      const payload = {
+        action: "delete",
+        id: id
+      };
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+
+      if (result.status === "success") {
+        return true;
+      } else {
+        throw new Error(result.message || "後端刪除餐點失敗");
+      }
+    }
+
+    // (4) 送出點餐 (POST: action=order)
+    async function apiSubmitOrder(orderData) {
+      if (!API_URL || API_URL.trim() === "https://script.google.com/macros/s/AKfycbzVAJr9IjD_LQz0OA-LURA2qKwJOcU-sYeiCIGnrEtCFOClA9ANy5v-v17vA4WifreUog/exec") {
+        // 模擬環境下單
+        return {
+          orderId: "MOCK-ORD-" + Date.now(),
+          ...orderData,
+          timestamp: new Date().toLocaleTimeString()
+        };
+      }
+
+      const payload = {
+        action: "order",
+        ...orderData
+      };
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
+
+      if (result.status === "success") {
+        return result.data;
+      } else {
+        throw new Error(result.message || "後端點餐下單失敗");
+      }
+    }
+
+    function updateApiStatus(isOnline, text) {
+      apiStatusText.textContent = text;
+      if (isOnline) {
+        apiStatusDot.className = "w-2 h-2 rounded-full bg-emerald-400";
+      } else {
+        apiStatusDot.className = "w-2 h-2 rounded-full bg-amber-400";
+      }
+    }
+
+    /**
+     * ===================================================================
+     * 6. 畫面渲染函式 (UI Rendering)
+     * ===================================================================
+     */
+
+    // 渲染菜單網格
+    function renderMenu() {
+      // 根據分類過濾
+      const filtered = currentCategory === 'all'
+        ? menuData
+        : menuData.filter(item => item.category === currentCategory);
+
+      menuContainer.innerHTML = '';
+
+      if (filtered.length === 0) {
+        noDataAlert.classList.remove('hidden');
+        return;
+      } else {
+        noDataAlert.classList.add('hidden');
+      }
+
+      filtered.forEach((item, index) => {
+        const card = document.createElement('div');
+        // 加入交錯緩慢上下微幅漂移動畫
+        const floatAnimClass = index % 2 === 0 ? 'animate-float-slow' : 'animate-float-delayed';
+
+        card.className = `neon-card glass-panel rounded-3xl p-4 flex flex-col justify-between relative group ${floatAnimClass}`;
+
+        // 分類標籤樣式
+        const categoryBadgeColors = {
+          '主食': 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30',
+          '副食': 'bg-blue-500/15 text-blue-300 border-blue-500/30',
+          '飲料': 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
+          '甜點': 'bg-pink-500/15 text-pink-300 border-pink-500/30',
+        };
+        const catBadgeClass = categoryBadgeColors[item.category] || 'bg-slate-500/15 text-slate-300 border-slate-500/30';
+
+        card.innerHTML = `
+          <!-- 卡片頂部圖片與標籤 -->
+          <div class="relative w-full h-44 rounded-2xl overflow-hidden mb-4 bg-slate-900">
+            <img 
+              src="${item.imageUrl || ''}" 
+              alt="${item.name}" 
+              onerror="this.onerror=null; this.src='${FALLBACK_IMAGE_SVG}';" 
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-out" 
+            />
+            
+            <!-- 分類膠囊標籤 -->
+            <span class="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-xs font-semibold border backdrop-blur-md ${catBadgeClass}">
+              ${item.category || '精選'}
+            </span>
+
+            <!-- 管理員專用：刪除按鈕 (右上角) -->
+            <button 
+              class="admin-delete-btn ${isAdminMode ? 'flex' : 'hidden'} absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-red-500/90 hover:bg-red-600 text-white items-center justify-center shadow-lg transition-transform hover:scale-110" 
+              title="刪除此餐點" 
+              data-id="${item.id}"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- 餐點資訊 -->
+          <div class="flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-1">
+                <h3 class="font-bold text-base text-white group-hover:text-cyan-300 transition-colors">${item.name}</h3>
+              </div>
+              <p class="text-xs text-slate-400 line-clamp-2 mb-3 leading-relaxed">${item.description || '由反重力星際主廚親自手作之美味料理。'}</p>
+            </div>
+
+            <!-- 價格與加入點餐按鈕 -->
+            <div class="pt-3 border-t border-white/5 flex items-center justify-between">
+              <div>
+                <span class="text-[10px] text-slate-400 block font-mono">能量計價</span>
+                <span class="text-lg font-display font-black text-cyan-400">NT$ ${Number(item.price).toLocaleString()}</span>
+              </div>
+
+              <button 
+                class="btn-add-to-cart px-3.5 py-2 rounded-xl bg-white/5 hover:bg-cyan-500 hover:text-slate-950 text-cyan-300 border border-cyan-500/30 hover:border-cyan-400 text-xs font-bold transition-all duration-300 flex items-center gap-1.5 shadow-sm active:scale-95"
+                data-id="${item.id}"
+              >
+                <span>+</span>
+                <span>加入點餐單</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        menuContainer.appendChild(card);
+      });
+    }
+
+    // 渲染購物車
+    function renderCart() {
+      const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+      cartCountBadge.textContent = `${totalCount} 項餐點`;
+
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = '';
+        cartItemsList.appendChild(emptyCartState);
+        cartCheckoutSection.classList.add('hidden');
+        return;
+      }
+
+      emptyCartState.remove();
+      cartCheckoutSection.classList.remove('hidden');
+
+      let subtotal = 0;
+      cartItemsList.innerHTML = '';
+
+      cart.forEach(item => {
+        const itemSubtotal = item.price * item.quantity;
+        subtotal += itemSubtotal;
+
+        const cartItemEl = document.createElement('div');
+        cartItemEl.className = 'glass-panel p-3 rounded-2xl flex items-center justify-between gap-2 border border-white/10 hover:border-cyan-400/30 transition-all';
+        cartItemEl.innerHTML = `
+          <div class="flex-1 min-w-0">
+            <h4 class="text-xs font-bold text-slate-100 truncate">${item.name}</h4>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-[11px] text-cyan-400 font-mono font-bold">NT$ ${item.price}</span>
+              <span class="text-[10px] text-slate-400">小計: NT$ ${itemSubtotal.toLocaleString()}</span>
+            </div>
+          </div>
+
+          <!-- 數量增減控制器 -->
+          <div class="flex items-center gap-1.5 bg-slate-950/80 px-2 py-1 rounded-xl border border-white/10">
+            <button class="btn-qty-minus text-slate-400 hover:text-cyan-400 px-1 text-sm font-bold transition-colors" data-id="${item.id}">-</button>
+            <span class="text-xs font-mono font-bold text-white px-1">${item.quantity}</span>
+            <button class="btn-qty-plus text-slate-400 hover:text-cyan-400 px-1 text-sm font-bold transition-colors" data-id="${item.id}">+</button>
+          </div>
+        `;
+        cartItemsList.appendChild(cartItemEl);
+      });
+
+      cartSubtotal.textContent = `NT$ ${subtotal.toLocaleString()}`;
+      cartTotalPrice.textContent = `NT$ ${subtotal.toLocaleString()}`;
+    }
+
+    /**
+     * ===================================================================
+     * 7. 購物車互動邏輯
+     * ===================================================================
+     */
+
+    // 加入購物車
+    function addToCart(itemId) {
+      const product = menuData.find(item => String(item.id) === String(itemId));
+      if (!product) return;
+
+      const existing = cart.find(c => String(c.id) === String(itemId));
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: Number(product.price),
+          quantity: 1
+        });
+      }
+      renderCart();
+      showToast("餐點已加入", `已將「${product.name}」加入點餐單`, "🛸");
+    }
+
+    // 調整數量
+    function updateCartQuantity(itemId, delta) {
+      const target = cart.find(c => String(c.id) === String(itemId));
+      if (!target) return;
+
+      target.quantity += delta;
+      if (target.quantity <= 0) {
+        cart = cart.filter(c => String(c.id) !== String(itemId));
+      }
+      renderCart();
+    }
+
+    /**
+     * ===================================================================
+     * 8. 事件監聽 (Event Listeners)
+     * ===================================================================
+     */
+
+    // (1) 菜單卡片上的點擊 (加入點餐單 或 管理員刪除)
+    menuContainer.addEventListener('click', async (e) => {
+      // 點擊「加入點餐單」
+      const addBtn = e.target.closest('.btn-add-to-cart');
+      if (addBtn) {
+        const id = addBtn.getAttribute('data-id');
+        addToCart(id);
+        return;
+      }
+
+      // 點擊「管理員刪除按鈕」
+      const delBtn = e.target.closest('.admin-delete-btn');
+      if (delBtn) {
+        const id = delBtn.getAttribute('data-id');
+        const item = menuData.find(d => String(d.id) === String(id));
+        const confirmMsg = `確定要從菜單中永久抹除「${item ? item.name : '此餐點'}」嗎？`;
+
+        if (!confirm(confirmMsg)) return;
+
+        try {
+          toggleGlobalLoading(true, "DELETING MENU ITEM...");
+          await apiDeleteMenuItem(id);
+          // 本地資料同步更新
+          menuData = menuData.filter(d => String(d.id) !== String(id));
+          renderMenu();
+          showToast("刪除成功", `餐點已自系統與試算表中移除`, "🗑️");
+        } catch (err) {
+          alert("刪除失敗：" + err.message);
+        } finally {
+          toggleGlobalLoading(false);
+        }
+      }
+    });
+
+    // (2) 購物車數量變更點擊
+    cartItemsList.addEventListener('click', (e) => {
+      const plusBtn = e.target.closest('.btn-qty-plus');
+      if (plusBtn) {
+        updateCartQuantity(plusBtn.getAttribute('data-id'), 1);
+        return;
+      }
+
+      const minusBtn = e.target.closest('.btn-qty-minus');
+      if (minusBtn) {
+        updateCartQuantity(minusBtn.getAttribute('data-id'), -1);
+        return;
+      }
+    });
+
+    // (3) 送出訂單
+    btnSubmitOrder.addEventListener('click', async () => {
+      if (cart.length === 0) {
+        showToast("點餐單為空", "請先選擇欲點選的餐點品項", "⚠️");
+        return;
+      }
+
+      const customerName = inputCustomerName.value.trim();
+      if (!customerName) {
+        inputCustomerName.focus();
+        showToast("請輸入姓名", "請填寫用餐顧客姓名或艙房代號", "✍️");
+        return;
+      }
+
+      // 計算總金額
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+      // 禁用按鈕顯示 Loading
+      btnSubmitOrder.disabled = true;
+      btnOrderText.textContent = "量子點餐傳送中...";
+      btnOrderSpinner.classList.remove('hidden');
+
+      try {
+        const orderPayload = {
+          customerName: customerName,
+          items: cart.map(i => ({ id: i.id, name: i.name, quantity: i.quantity, price: i.price })),
+          totalPrice: totalPrice
+        };
+
+        const responseData = await apiSubmitOrder(orderPayload);
+
+        // 成功處理：顯示自訂提示並清空購物車
+        showToast(
+          "點餐成功 ✦ 訂單已建立",
+          `顧客: ${customerName} | 訂單編號: ${responseData.orderId || 'ORD-SUCCESS'}`,
+          "🚀"
+        );
+
+        // 重置狀態
+        cart = [];
+        inputCustomerName.value = '';
+        renderCart();
+
+      } catch (err) {
+        alert("點餐送出失敗：" + err.message);
+      } finally {
+        btnSubmitOrder.disabled = false;
+        btnOrderText.textContent = "確認送出點餐 🚀";
+        btnOrderSpinner.classList.add('hidden');
+      }
+    });
+
+    // (4) 管理員模式開關切換
+    function toggleAdminMode(enable) {
+      isAdminMode = typeof enable === 'boolean' ? enable : !isAdminMode;
+
+      if (isAdminMode) {
+        adminPanel.classList.remove('hidden');
+        adminToggleLabel.textContent = "退出管理模式";
+        btnToggleAdmin.classList.add('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+        showToast("管理員模式已啟用", "已開啟頂部餐點新增面板與刪除控制項", "🛠️");
+      } else {
+        adminPanel.classList.add('hidden');
+        adminToggleLabel.textContent = "切換為管理員模式";
+        btnToggleAdmin.classList.remove('bg-cyan-500/20', 'border-cyan-400', 'text-cyan-300');
+      }
+
+      // 重新渲染以顯示或隱藏刪除按鈕
+      renderMenu();
+    }
+
+    btnToggleAdmin.addEventListener('click', () => toggleAdminMode());
+    btnCloseAdmin.addEventListener('click', () => toggleAdminMode(false));
+
+    // (5) 管理員新增餐點表單送出
+    addMenuForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('inputName').value.trim();
+      const category = document.getElementById('inputCategory').value;
+      const price = Number(document.getElementById('inputPrice').value);
+      const imageUrl = document.getElementById('inputImageUrl').value.trim();
+      const description = document.getElementById('inputDescription').value.trim();
+
+      if (!name || isNaN(price)) return;
+
+      btnSubmitAdd.disabled = true;
+      btnSubmitAddText.textContent = "上架中...";
+      btnSubmitAddSpinner.classList.remove('hidden');
+
+      try {
+        const newItem = {
+          name,
+          category,
+          price,
+          imageUrl: imageUrl || FALLBACK_IMAGE_SVG,
+          description,
+          status: "上架"
+        };
+
+        const created = await apiAddMenuItem(newItem);
+
+        // 若不是在線上模式，本地即時新增
+        if (API_URL && API_URL.trim() !== "") {
+          menuData.push(created);
+        }
+
+        renderMenu();
+        addMenuForm.reset();
+        showToast("餐點上架成功", `「${name}」已順利加入星際菜單`, "✨");
+
+      } catch (err) {
+        alert("新增餐點失敗: " + err.message);
+      } finally {
+        btnSubmitAdd.disabled = false;
+        btnSubmitAddText.textContent = "上架餐點";
+        btnSubmitAddSpinner.classList.add('hidden');
+      }
+    });
+
+    // (6) 分類標籤頁籤切換
+    document.getElementById('categoryFilterGroup').addEventListener('click', (e) => {
+      const btn = e.target.closest('.cat-btn');
+      if (!btn) return;
+
+      currentCategory = btn.getAttribute('data-cat');
+
+      // 更新按鈕樣式
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.className = 'cat-btn px-4 py-1.5 rounded-xl text-xs font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all';
+      });
+      btn.className = 'cat-btn px-4 py-1.5 rounded-xl text-xs font-medium bg-gradient-to-r from-cyan-500 to-blue-500 text-slate-950 font-bold shadow-md shadow-cyan-500/20';
+
+      renderMenu();
+    });
+
+    /**
+     * ===================================================================
+     * 9. 頁面初始化
+     * ===================================================================
+     */
+    window.addEventListener('DOMContentLoaded', () => {
+      fetchMenuFromAPI();
+      renderCart();
+    });
+  </script>
+</body>
+
+</html>
